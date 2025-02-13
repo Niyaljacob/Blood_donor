@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "712914171808",
+    "project_id": "donatelife-b1088",
+    "storage_bucket": "donatelife-b1088.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712914171808:android:620f2ad69112f2bf10d6c5",
+        "android_client_info": {
+          "package_name": "com.example.donatelife"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7YHih27Q5bzhW3UYoCbl8rtQVJTTzXX0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
