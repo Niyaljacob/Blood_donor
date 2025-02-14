@@ -1,9 +1,11 @@
+import 'package:donatelife/features/authentication/presentation/screens/registration_screen.dart';
 import 'package:donatelife/features/authentication/presentation/screens/sign_in_Screen.dart';
+import 'package:donatelife/routes/ro_router_refresh_stream.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart'; // Use this for the @riverpod annotation
 import 'package:donatelife/features/user_management/presentation/screens/main_screen.dart';
 import 'package:donatelife/splash/splash_screen.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 part 'routes.g.dart'; // Generated code will go here
 
 enum AppRoutes {
@@ -16,13 +18,25 @@ enum AppRoutes {
   emailedUsers,
   notifications,
 }
+final firebaseAuthProvider = Provider((ref)=>FirebaseAuth.instance);
 
 // Define the GoRouter provider
 @riverpod
 GoRouter goRouter(GoRouterRef ref) {
+  final firebaseAuth = ref.watch(firebaseAuthProvider);
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: true,
+    redirect:(ctx, state){
+      final isLoading = firebaseAuth.currentUser!=null;
+      if(isLoading && (state.uri.toString()=='/signIn'|| state.uri.toString()=='/register')){
+        return '/main';
+      }else if (!isLoading && state.uri.toString().startsWith('/main')){
+        return '/signIn';
+      }
+      return null;
+    },
+    refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
     routes: [
       GoRoute(
         path: '/splash',
@@ -33,6 +47,14 @@ GoRouter goRouter(GoRouterRef ref) {
         path: '/main',
         name: AppRoutes.main.name,
         builder: (context, state) => const MainScreen(),
+      ),
+      GoRoute(
+        path: '/register',
+        name: AppRoutes.register.name,
+        builder: (context, state) {
+          final type =state.extra as String;
+          return  RegistrationScreen(type);
+        },
       ),
       GoRoute(
         path: '/signIn',

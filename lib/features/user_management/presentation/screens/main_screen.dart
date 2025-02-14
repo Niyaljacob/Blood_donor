@@ -1,3 +1,4 @@
+import 'package:donatelife/features/user_management/presentation/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +11,7 @@ class MainScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text("main Screen"),
       ),
+      drawer: const MainDrawer(),
     );
   }
 }

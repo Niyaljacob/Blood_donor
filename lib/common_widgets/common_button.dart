@@ -31,14 +31,15 @@ class _CommonButtonState extends State<CommonButton> {
           decoration: BoxDecoration(
             color: Appstyles.mainColor,
             borderRadius: BorderRadius.circular(20),
-          ), 
-
+          ),
           child: widget.isLoading
               ? const CircularProgressIndicator()
-              : Text(
-                  widget.title,
-                  style: Appstyles.normalTextStyle,
-                )), 
-    ); 
+              : Text(widget.title,
+                  style: TextStyle(
+                    fontSize: SizeConfig.getProportionteHeight(15),
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                  ))),
+    );
   }
 }
