@@ -1,5 +1,6 @@
 import 'package:donatelife/features/authentication/presentation/screens/registration_screen.dart';
 import 'package:donatelife/features/authentication/presentation/screens/sign_in_Screen.dart';
+import 'package:donatelife/features/user_management/presentation/screens/blood_group_selected_screen.dart';
 import 'package:donatelife/routes/ro_router_refresh_stream.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart'; // Use this for the @riverpod annotation
 import 'package:donatelife/features/user_management/presentation/screens/main_screen.dart';
@@ -47,6 +48,16 @@ GoRouter goRouter(GoRouterRef ref) {
         path: '/main',
         name: AppRoutes.main.name,
         builder: (context, state) => const MainScreen(),
+        routes: [
+          GoRoute(
+        path: '/bloodGroupSelected',
+        name: AppRoutes.bloodGroupSelected.name,
+        builder: (context, state) {
+          final bloodGroup =state.extra as String;
+          return  BloodGroupSelectedScreen(bloodGroup);
+        },
+      ),
+        ]
       ),
       GoRoute(
         path: '/register',
@@ -61,6 +72,7 @@ GoRouter goRouter(GoRouterRef ref) {
         name: AppRoutes.signIn.name,
         builder: (context, state) => const SignInScreen(),
       ),
+      
     ],
   );
 }
