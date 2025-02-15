@@ -1,3 +1,4 @@
+import 'package:donatelife/features/authentication/presentation/screens/account_screen.dart';
 import 'package:donatelife/features/authentication/presentation/screens/registration_screen.dart';
 import 'package:donatelife/features/authentication/presentation/screens/sign_in_Screen.dart';
 import 'package:donatelife/features/user_management/presentation/screens/blood_group_selected_screen.dart';
@@ -72,7 +73,11 @@ GoRouter goRouter(GoRouterRef ref) {
         name: AppRoutes.signIn.name,
         builder: (context, state) => const SignInScreen(),
       ),
-      
+      GoRoute(
+        path: '/account',
+        name: AppRoutes.account.name,
+        builder: (context, state) => const AccountScreen(),
+      ),
     ],
   );
 }

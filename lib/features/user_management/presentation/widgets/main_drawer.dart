@@ -292,6 +292,7 @@ class MainDrawer extends ConsumerWidget {
                                 fontWeight: FontWeight.w400,
                               )),
                           onTap: () {
+                            context.goNamed(AppRoutes.account.name);
                           },
                         ),
                       ],
