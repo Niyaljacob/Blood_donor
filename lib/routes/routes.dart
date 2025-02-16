@@ -8,6 +8,8 @@ import 'package:donatelife/features/user_management/presentation/screens/main_sc
 import 'package:donatelife/splash/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../splash/onboarding_screen.dart';
 part 'routes.g.dart'; // Generated code will go here
 
 enum AppRoutes {
@@ -19,6 +21,7 @@ enum AppRoutes {
   bloodGroupSelected,
   emailedUsers,
   notifications,
+  onboardingscreen,
 }
 final firebaseAuthProvider = Provider((ref)=>FirebaseAuth.instance);
 
@@ -44,6 +47,11 @@ GoRouter goRouter(GoRouterRef ref) {
         path: '/splash',
         name: AppRoutes.splash.name,
         builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: '/onboardingscreen',
+        name: AppRoutes.onboardingscreen.name,
+        builder: (context, state) =>  OnboardingScreen(),
       ),
       GoRoute(
         path: '/main',
