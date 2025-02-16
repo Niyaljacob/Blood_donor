@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../splash/onboarding_screen.dart';
+
 part 'routes.g.dart'; // Generated code will go here
 
 enum AppRoutes {
@@ -19,25 +20,35 @@ enum AppRoutes {
   register,
   account,
   bloodGroupSelected,
-  emailedUsers,
-  notifications,
   onboardingscreen,
 }
-final firebaseAuthProvider = Provider((ref)=>FirebaseAuth.instance);
+
+final firebaseAuthProvider = Provider((ref) => FirebaseAuth.instance);
 
 // Define the GoRouter provider
 @riverpod
 GoRouter goRouter(GoRouterRef ref) {
   final firebaseAuth = ref.watch(firebaseAuthProvider);
+  final isLoggedIn = firebaseAuth.currentUser != null;
+
   return GoRouter(
     initialLocation: '/splash',
     debugLogDiagnostics: true,
-    redirect:(ctx, state){
-      final isLoading = firebaseAuth.currentUser!=null;
-      if(isLoading && (state.uri.toString()=='/signIn'|| state.uri.toString()=='/register')){
+    redirect: (ctx, state) {
+      final isLoggedIn = firebaseAuth.currentUser != null;
+      final location = state.uri.path;
+
+      if (!isLoggedIn) {
+        // User is not logged in, navigate through onboarding
+        if (location != '/onboardingscreen' &&
+            location != '/signIn' &&
+            location != '/splash') {
+          return '/onboardingscreen';
+        }
+      } else if (isLoggedIn &&
+          (location == '/onboardingscreen' || location == '/signIn')) {
+        // If logged in, skip onboarding and sign-in
         return '/main';
-      }else if (!isLoading && state.uri.toString().startsWith('/main')){
-        return '/signIn';
       }
       return null;
     },
@@ -51,7 +62,7 @@ GoRouter goRouter(GoRouterRef ref) {
       GoRoute(
         path: '/onboardingscreen',
         name: AppRoutes.onboardingscreen.name,
-        builder: (context, state) =>  OnboardingScreen(),
+        builder: (context, state) => OnboardingScreen(),
       ),
       GoRoute(
         path: '/main',
@@ -59,21 +70,21 @@ GoRouter goRouter(GoRouterRef ref) {
         builder: (context, state) => const MainScreen(),
         routes: [
           GoRoute(
-        path: '/bloodGroupSelected',
-        name: AppRoutes.bloodGroupSelected.name,
-        builder: (context, state) {
-          final bloodGroup =state.extra as String;
-          return  BloodGroupSelectedScreen(bloodGroup);
-        },
-      ),
-        ]
+            path: '/bloodGroupSelected',
+            name: AppRoutes.bloodGroupSelected.name,
+            builder: (context, state) {
+              final bloodGroup = state.extra as String;
+              return BloodGroupSelectedScreen(bloodGroup);
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: '/register',
         name: AppRoutes.register.name,
         builder: (context, state) {
-          final type =state.extra as String;
-          return  RegistrationScreen(type);
+          final type = state.extra as String;
+          return RegistrationScreen(type);
         },
       ),
       GoRoute(

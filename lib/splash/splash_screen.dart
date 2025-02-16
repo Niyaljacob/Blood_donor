@@ -1,5 +1,6 @@
 import 'package:donatelife/routes/routes.dart';
 import 'package:donatelife/utils/appstyles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,9 +31,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   
   _controller.forward();
 
-  Future.delayed(const Duration(seconds: 3),(){
-    context.goNamed(AppRoutes.signIn.name);
-  });
+  Future.delayed(const Duration(seconds: 3), () {
+  final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+  final route = isLoggedIn ? AppRoutes.main.name : AppRoutes.onboardingscreen.name;
+  context.goNamed(route);
+});
+
   }
 
   @override

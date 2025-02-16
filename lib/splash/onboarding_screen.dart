@@ -1,5 +1,6 @@
 import 'package:donatelife/features/authentication/presentation/screens/sign_in_Screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -31,11 +32,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _pageController.nextPage(
           duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     } else {
-      // Navigate to the next screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => SignInScreen()),
-      );
+      context.go('/signIn');
     }
   }
 
@@ -65,10 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignInScreen()),
-                    );
+                    context.go('/signIn');
                   },
                   child: Text(
                     'Skip',
