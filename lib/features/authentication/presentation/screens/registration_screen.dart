@@ -8,6 +8,7 @@ import 'package:donatelife/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 
 class RegistrationScreen extends ConsumerStatefulWidget {
   const RegistrationScreen(this.type, {super.key});
@@ -33,6 +34,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
     'AB+',
     'AB-',
   ];
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -47,168 +49,182 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
     SizeConfig.init(context);
     final state = ref.watch(authControllerProvider);
 
-  ref.listen<AsyncValue>(authControllerProvider, (_, state){
-    state.showAlertDialogOnError(context);
-  });
+    ref.listen<AsyncValue>(authControllerProvider, (_, state) {
+      state.showAlertDialogOnError(context);
+    });
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Appstyles.mainColor,
-        body: Padding(
-          padding: EdgeInsets.fromLTRB(
-              SizeConfig.getProportionteWidth(10),
-              SizeConfig.getProportionteHeight(50),
-              SizeConfig.getProportionteWidth(10),
-              0),
-          child: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
-              child: Column(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  Image.asset(
-                    'assets/unnamed.png',
-                    fit: BoxFit.cover,
-                  ),
-                  Text(
-                    "${widget.type}Registration",
-                    style: TextStyle(
-                        fontSize: SizeConfig.getProportionteHeight(18),
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(25),
-                  ),
-                  CommonTextField(
-                      hintText: "Enter Name...",
-                      textInputType: TextInputType.text,
-                      controller: _nameController),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                  CommonTextField(
-                      hintText: "Enter Phone Number...",
-                      textInputType: TextInputType.number,
-                      controller: _phoneController),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                  DropdownButtonFormField<String>(
-                    value: _selectedBloodGroup,
-                    decoration: InputDecoration(
-                      labelText: 'Select Blood Group',
-                      labelStyle: TextStyle(
-                        fontSize: SizeConfig.getProportionteHeight(15),
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          style: BorderStyle.solid,
-                        ), // BorderSide
-                        borderRadius: BorderRadius.circular(20),
-                      ), // Outline InputBorder
-                    ), // InputDecoration
-                    items: _bloodGroups.map((String group) {
-                      return DropdownMenuItem<String>(
-                        value: group,
-                        child: Text(
-                          group,
-                          style: TextStyle(
-                            fontSize: SizeConfig.getProportionteHeight(15),
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ), // Text
-                      ); // DropdownMenuItem
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedBloodGroup = newValue;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                  CommonTextField(
-                      hintText: "Enter Email...",
-                      textInputType: TextInputType.emailAddress,
-                      controller: _emailController),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                  CommonTextField(
-                      hintText: "Enter Password...",
-                      textInputType: TextInputType.text,
-                      controller: _passwordController),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                  CommonButton(
-                      onTap: () {
-                        final email = _emailController.text.toString();
-                        final password = _passwordController.text.toString();
-                        final name = _nameController.text.toString();
-                        final phoneNumber = _phoneController.text.toString();
-
-                        ref.read(authControllerProvider.notifier)
-                        .createUserWithEmailAndPassword(
-                          email: email, 
-                          password: password, 
-                          name: name, 
-                          phoneNumber: phoneNumber, 
-                          bloodGroup: _selectedBloodGroup!,
-                           type: widget.type);
-                      }, title: "Register Me Now", isLoading: state.isLoading),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(15),
-                  ),
-                  Text(
-                    "OR",
-                    style: TextStyle(
-                        fontSize: SizeConfig.getProportionteHeight(20),
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(15),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.goNamed(
-                        AppRoutes.signIn.name,
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      width: SizeConfig.screenWidth,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 2,
-                            style: BorderStyle.solid,
-                          )),
-                      child: Text(
-                        "Sign In to my account",
-                        style: TextStyle(
-                          fontSize: SizeConfig.getProportionteHeight(15),
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
+                  
+                  Lottie.asset(
+                    'assets/Animation2.json',
+                    height: SizeConfig.getProportionteHeight(150),
                   ),
                 ],
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.getProportionteWidth(20),
+                ),
+                child: Container(
+                  margin: EdgeInsets.only(top: SizeConfig.getProportionteHeight(20)),
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "${widget.type} Registration",
+                        style: TextStyle(
+                          fontSize: SizeConfig.getProportionteHeight(20),
+                          fontWeight: FontWeight.bold,
+                          color: Appstyles.mainColor,
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.getProportionteHeight(20)),
+                      CommonTextField(
+                        hintText: "Enter Name...",
+                        textInputType: TextInputType.text,
+                        controller: _nameController,
+                      ),
+                      SizedBox(height: SizeConfig.getProportionteHeight(10)),
+                      CommonTextField(
+                        hintText: "Enter Phone Number...",
+                        textInputType: TextInputType.number,
+                        controller: _phoneController,
+                      ),
+                      SizedBox(height: SizeConfig.getProportionteHeight(10)),
+                      DropdownButtonFormField<String>(
+                        value: _selectedBloodGroup,
+                        decoration: InputDecoration(
+                          labelText: 'Select Blood Group',
+                          labelStyle: TextStyle(
+                            fontSize: SizeConfig.getProportionteHeight(15),
+                            color: Appstyles.mainColor,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        items: _bloodGroups.map((String group) {
+                          return DropdownMenuItem<String>(
+                            value: group,
+                            child: Text(
+                              group,
+                              style: TextStyle(
+                                fontSize: SizeConfig.getProportionteHeight(15),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedBloodGroup = newValue;
+                          });
+                        },
+                      ),
+                      SizedBox(height: SizeConfig.getProportionteHeight(10)),
+                      CommonTextField(
+                        hintText: "Enter Email...",
+                        textInputType: TextInputType.emailAddress,
+                        controller: _emailController,
+                      ),
+                      SizedBox(height: SizeConfig.getProportionteHeight(10)),
+                      CommonTextField(
+                        hintText: "Enter Password...",
+                        textInputType: TextInputType.text,
+                        controller: _passwordController,
+                      ),
+                      SizedBox(height: SizeConfig.getProportionteHeight(20)),
+                      CommonButton(
+  onTap: () {
+    final email = _emailController.text.toString();
+    final password = _passwordController.text.toString();
+    final name = _nameController.text.toString();
+    final phoneNumber = _phoneController.text.toString();
+
+    ref
+        .read(authControllerProvider.notifier)
+        .createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+          name: name,
+          phoneNumber: phoneNumber,
+          bloodGroup: _selectedBloodGroup!,
+          type: widget.type,
+        )
+        .then((_) {
+          // Navigate to the Sign In screen after successful registration
+          context.goNamed(AppRoutes.signIn.name);
+        }).catchError((error) {
+          // Handle the error if the registration fails
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Registration failed: $error')),
+          );
+        });
+  },
+  title: "Register Me Now",
+  isLoading: state.isLoading,
+),
+
+                      SizedBox(height: SizeConfig.getProportionteHeight(15)),
+                      Text(
+                        "OR",
+                        style: TextStyle(
+                          fontSize: SizeConfig.getProportionteHeight(20),
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: SizeConfig.getProportionteHeight(15)),
+                      GestureDetector(
+                        onTap: () {
+                          context.goNamed(AppRoutes.signIn.name);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Appstyles.mainColor,
+                              width: 2,
+                            ),
+                          ),
+                          child: Text(
+                            "Sign In to my account",
+                            style: TextStyle(
+                              fontSize: SizeConfig.getProportionteHeight(15),
+                              color: Appstyles.mainColor,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

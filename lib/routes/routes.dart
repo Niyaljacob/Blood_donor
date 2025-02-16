@@ -35,23 +35,25 @@ GoRouter goRouter(GoRouterRef ref) {
     initialLocation: '/splash',
     debugLogDiagnostics: true,
     redirect: (ctx, state) {
-      final isLoggedIn = firebaseAuth.currentUser != null;
-      final location = state.uri.path;
+  final isLoggedIn = firebaseAuth.currentUser != null;
+  final location = state.uri.path;
 
-      if (!isLoggedIn) {
-        // User is not logged in, navigate through onboarding
-        if (location != '/onboardingscreen' &&
-            location != '/signIn' &&
-            location != '/splash') {
-          return '/onboardingscreen';
-        }
-      } else if (isLoggedIn &&
-          (location == '/onboardingscreen' || location == '/signIn')) {
-        // If logged in, skip onboarding and sign-in
-        return '/main';
-      }
-      return null;
-    },
+  if (!isLoggedIn) {
+    // Allow access to onboarding, sign-in, splash, and registration screens
+    if (location != '/onboardingscreen' &&
+        location != '/signIn' &&
+        location != '/splash' &&
+        location != '/register') {
+      return '/onboardingscreen';
+    }
+  } else if (isLoggedIn &&
+      (location == '/onboardingscreen' || location == '/signIn')) {
+    // If logged in, skip onboarding and sign-in
+    return '/main';
+  }
+  return null;
+},
+
     refreshListenable: GoRouterRefreshStream(firebaseAuth.authStateChanges()),
     routes: [
       GoRoute(

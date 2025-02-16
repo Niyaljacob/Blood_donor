@@ -23,5 +23,5 @@ class Appstyles {
     fontWeight: FontWeight.w400,
   );
 
-  static const mainColor = Colors.redAccent;
+  static const mainColor = Color.fromARGB(255, 207, 101, 101);
 }

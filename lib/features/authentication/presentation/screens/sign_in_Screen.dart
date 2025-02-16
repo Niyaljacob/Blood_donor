@@ -8,6 +8,8 @@ import 'package:donatelife/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:animate_do/animate_do.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -31,11 +33,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   Widget build(BuildContext context) {
     SizeConfig.init(context);
 
-  final state = ref.watch(authControllerProvider);
+    final state = ref.watch(authControllerProvider);
 
-  ref.listen<AsyncValue>(authControllerProvider, (_, state){
-    state.showAlertDialogOnError(context);
-  });
+    ref.listen<AsyncValue>(authControllerProvider, (_, state) {
+      state.showAlertDialogOnError(context);
+    });
 
     return SafeArea(
       child: Scaffold(
@@ -47,35 +49,54 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               SizeConfig.getProportionteWidth(10),
               0),
           child: SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/unnamed.png',
-                    fit: BoxFit.cover,
-                  ),
-                  Text("Sign In to your account"),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(25),
-                  ),
-                  CommonTextField(
+            child: FadeInUp(
+              duration: const Duration(milliseconds: 800),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      blurRadius: 30,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    BounceInDown(
+                      duration: const Duration(milliseconds: 800),
+                      child: Image.asset(
+                        'assets/unnamed.png',
+                        fit: BoxFit.cover,
+                        height: SizeConfig.getProportionteHeight(150),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Sign In to your account",
+                      style: GoogleFonts.lato(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: SizeConfig.getProportionteHeight(25)),
+                    CommonTextField(
                       hintText: "Enter Email...",
                       textInputType: TextInputType.emailAddress,
-                      controller: _emailController),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                  CommonTextField(
+                      controller: _emailController,
+                    ),
+                    SizedBox(height: SizeConfig.getProportionteHeight(20)),
+                    CommonTextField(
                       hintText: "Enter Password...",
                       textInputType: TextInputType.text,
-                      controller: _passwordController),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                  CommonButton(
+                      controller: _passwordController,
+                    ),
+                    SizedBox(height: SizeConfig.getProportionteHeight(20)),
+                    CommonButton(
                       onTap: () {
                         final email = _emailController.text.toString();
                         final password = _passwordController.text.toString();
@@ -86,80 +107,81 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       },
                       title: "Sign in",
                       isLoading: state.isLoading,
-                      ),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(15),
-                  ),
-                  Text(
-                    "OR",
-                    style: TextStyle(
+                    ),
+                    SizedBox(height: SizeConfig.getProportionteHeight(25)),
+                    Text(
+                      "OR",
+                      style: TextStyle(
                         fontSize: SizeConfig.getProportionteHeight(20),
                         color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(15),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.goNamed(AppRoutes.register.name,
-                          extra: "Recipient");
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      width: SizeConfig.screenWidth,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 2,
-                            style: BorderStyle.solid,
-                          )),
-                      child: Text(
-                        "Register as Recipient",
-                        style: TextStyle(
-                          fontSize: SizeConfig.getProportionteHeight(15),
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.goNamed(AppRoutes.register.name, extra: "Donor");
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      width: SizeConfig.screenWidth,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 2,
-                            style: BorderStyle.solid,
-                          )),
-                      child: Text(
-                        "Register as Donor",
-                        style: TextStyle(
-                          fontSize: SizeConfig.getProportionteHeight(15),
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                    SizedBox(height: SizeConfig.getProportionteHeight(20)),
+                    _buildAnimatedButton(
+                      context,
+                      "Register as Recipient",
+                      Colors.pinkAccent,
+                      Icons.person,
+                      onTap: () {
+                        context.goNamed(AppRoutes.register.name, extra: "Recipient");
+                      },
                     ),
-                  ),
-                  SizedBox(
-                    height: SizeConfig.getProportionteHeight(10),
-                  ),
-                ],
+                    SizedBox(height: SizeConfig.getProportionteHeight(15)),
+                    _buildAnimatedButton(
+                      context,
+                      "Register as Donor",
+                      Colors.blueAccent,
+                      Icons.favorite,
+                      onTap: () {
+                        context.goNamed(AppRoutes.register.name, extra: "Donor");
+                      },
+                    ),
+                    SizedBox(height: SizeConfig.getProportionteHeight(10)),
+                  ],
+                ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedButton(BuildContext context, String title, Color color, IconData icon, {required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: SlideInLeft(
+        duration: const Duration(milliseconds: 700),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          width: SizeConfig.screenWidth,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: color.withOpacity(0.5),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(width: 10),
+              Text(
+                title,
+                style: GoogleFonts.lato(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: color,
+                ),
+              ),
+            ],
           ),
         ),
       ),
