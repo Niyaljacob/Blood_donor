@@ -23,25 +23,37 @@ state.showAlertDialogOnError(context);
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: AsyncValueWidget<List<AppUser>>(
-                value: donorsAsyncValue, 
-                data: (donors){
-                  return donors.isEmpty? const Center(
-                      child: Text('No Donors Yest!'),
-                  ):ListView.builder(
-                    itemCount: donors.length,
-                    itemBuilder: (ctx, index){
-                      return UserItem(donors[index]);
-                    });
-                }
-                )
-            )
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Color.fromARGB(255, 255, 255, 255), // Light gradient color
+          Color.fromARGB(255, 175, 89, 74), // Darker gradient color
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: AsyncValueWidget<List<AppUser>>(
+                  value: donorsAsyncValue, 
+                  data: (donors){
+                    return donors.isEmpty? const Center(
+                        child: Text('No Donors Yest!'),
+                    ):ListView.builder(
+                      itemCount: donors.length,
+                      itemBuilder: (ctx, index){
+                        return UserItem(donors[index]);
+                      });
+                  }
+                  )
+              )
+            ],
+          ),
         ),
       ),
     );

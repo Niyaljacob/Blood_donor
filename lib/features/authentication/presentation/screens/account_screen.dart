@@ -29,7 +29,7 @@ class AccountScreen extends ConsumerWidget {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                title: const Text('Are yoy sure'),
+                title: const Text('Are you sure?'),
                 icon: const Icon(
                   Icons.logout,
                   size: 50,
@@ -44,7 +44,7 @@ class AccountScreen extends ConsumerWidget {
                         backgroundColor: Appstyles.mainColor,
                       ),
                       child: const Text(
-                        "cancel",
+                        "Cancel",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -54,7 +54,7 @@ class AccountScreen extends ConsumerWidget {
                       onPressed: () {
                         Navigator.of(context).pop();
                         ref.read(authRepositoryProvider).signOut();
-            ref.read(goRouterProvider).go('/signIn'); // Explicitly navigate to signIn
+                        ref.read(goRouterProvider).go('/signIn');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Appstyles.mainColor,
@@ -70,85 +70,155 @@ class AccountScreen extends ConsumerWidget {
               ));
     }
 
-    return Scaffold(
+    return Container(
+      decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        colors: [
+          Color.fromARGB(255, 255, 255, 255), // Light gradient color
+          Color.fromARGB(255, 175, 89, 74), // Darker gradient color
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
+      child: Scaffold(
+                backgroundColor: Colors.transparent, // Make Scaffold background transparent
+
         appBar: AppBar(
-  leading: IconButton(
-    icon: const Icon(Icons.arrow_back, color: Colors.white),
-    onPressed: () {
-      context.goNamed(AppRoutes.main.name, );
-    },
-  ),
-  title: const Text(
-    'My Profile Information',
-    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-  ),
-),
+          
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              context.goNamed(AppRoutes.main.name);
+            },
+          ),
+          title: const Text(
+            'My Profile',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Appstyles.mainColor,
+        ),
         body: AsyncValueWidget<AppUser>(
-            value: userDataAsync,
-            data: (userData) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+          value: userDataAsync,
+          data: (userData) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    Text(
-                      "Type: ${userData.type}",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      height: SizeConfig.getProportionteHeight(20),
-                    ),
-                    Image.asset(
-                      userData.type == 'Donor'
-                          ? 'assets/donar-rem.png'
-                          : 'assets/recipient-rem.png',
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    SizedBox(
-                      height: SizeConfig.getProportionteHeight(20),
-                    ),
-                    Text(
-                      'Name: ${userData.name}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
+                    // Profile Image
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.4),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage: AssetImage(
+                          userData.type == 'Donor'
+                              ? 'assets/donar-rem.png'
+                              : 'assets/recipient-rem.png',
+                        ),
                       ),
                     ),
-                    Text(
-                      'Blood Group: ${userData.bloodGroup}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
+                    const SizedBox(height: 20),
+      
+                    // Name and Info Card
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Name: ${userData.name}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Blood Group: ${userData.bloodGroup}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Email: ${userData.email}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black54,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Phone: ${userData.phoneNumber}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    Text(
-                      'Email: ${userData.email}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
+      
+                    const SizedBox(height: 30),
+      
+                    // User Type
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 20),
+                        child: Center(
+                          child: Text(
+                            "User Type: ${userData.type}",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Appstyles.mainColor,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                    Text(
-                      'Phone: ${userData.phoneNumber}',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(
-                      height: SizeConfig.getProportionteHeight(20),
-                    ),
+      
+                    const SizedBox(height: 30),
+      
+                    // Sign Out Button
                     CommonButton(
-                        onTap: () {
-                          logOut();
-                        },
-                        title: 'Sign Out',
-                        isLoading: false)
+                      onTap: logOut,
+                      title: 'Sign Out',
+                      isLoading: false,
+                    ),
                   ],
                 ),
-              );
-            }));
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
