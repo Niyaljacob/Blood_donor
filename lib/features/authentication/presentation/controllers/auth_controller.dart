@@ -36,7 +36,7 @@ required String bloodGroup,
 required String type,})
 async {
 
-if(email.trim().isEmpty || password.trim().isEmpty|| name.trim().isEmpty || phoneNumber.trim().isEmpty || bloodGroup==null){
+if(email.trim().isEmpty || password.trim().isEmpty|| name.trim().isEmpty || phoneNumber.trim().isEmpty){
   state = AsyncError(
 'Ensure all fields are filled',
 StackTrace.current,

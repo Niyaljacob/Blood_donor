@@ -56,8 +56,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         children: [
         SlideTransition(position: _logoAnimation, child: Image.asset('assets/unnamed.png', width: 150,),),
         const SizedBox(height:20),
-        SlideTransition(position: _textAnimation, child: Text("Blood Donation App",style: Appstyles.titleTextStyle,),),
-        SlideTransition(position: _textAnimation, child: Text("Donate And Save Lives!",style: Appstyles.normalTextStyle,),),
+        SlideTransition(position: _textAnimation, child: Text("Blood Donation App",style: TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.w600
+  ),),),
+        SlideTransition(position: _textAnimation, child: Text("Donate And Save Lives!",style: TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.w600
+  ),),),
 
       ],),),
     );

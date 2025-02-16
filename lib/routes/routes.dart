@@ -29,7 +29,6 @@ final firebaseAuthProvider = Provider((ref) => FirebaseAuth.instance);
 @riverpod
 GoRouter goRouter(GoRouterRef ref) {
   final firebaseAuth = ref.watch(firebaseAuthProvider);
-  final isLoggedIn = firebaseAuth.currentUser != null;
 
   return GoRouter(
     initialLocation: '/splash',

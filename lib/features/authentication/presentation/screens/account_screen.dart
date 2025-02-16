@@ -72,20 +72,20 @@ class AccountScreen extends ConsumerWidget {
 
     return Container(
       decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        colors: [
-          Color.fromARGB(255, 255, 255, 255), // Light gradient color
-          Color.fromARGB(255, 175, 89, 74), // Darker gradient color
-        ],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
+        gradient: LinearGradient(
+          colors: [
+            Color.fromARGB(255, 255, 255, 255), // Light gradient color
+            Color.fromARGB(255, 175, 89, 74), // Darker gradient color
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
       ),
-    ),
       child: Scaffold(
-                backgroundColor: Colors.transparent, // Make Scaffold background transparent
+        backgroundColor:
+            Colors.transparent, // Make Scaffold background transparent
 
         appBar: AppBar(
-          
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
@@ -130,7 +130,7 @@ class AccountScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-      
+
                     // Name and Info Card
                     Card(
                       shape: RoundedRectangleBorder(
@@ -179,9 +179,9 @@ class AccountScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
-      
+
                     const SizedBox(height: 30),
-      
+
                     // User Type
                     Card(
                       shape: RoundedRectangleBorder(
@@ -203,9 +203,9 @@ class AccountScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
-      
+
                     const SizedBox(height: 30),
-      
+
                     // Sign Out Button
                     CommonButton(
                       onTap: logOut,

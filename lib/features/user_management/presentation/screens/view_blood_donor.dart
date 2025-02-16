@@ -74,7 +74,7 @@ class ViewBloodDonor extends StatelessWidget {
                           // Dummy Profile Image
                           ClipOval(
                             child: Image.asset(
-                              'assets/banner1.jpg', // Replace with dummy image path
+                              'assets/profile.jpg', // Replace with dummy image path
                               width: 60,
                               height: 60,
                               fit: BoxFit.cover,

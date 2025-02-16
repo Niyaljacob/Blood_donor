@@ -24,7 +24,7 @@ class UserItem extends ConsumerWidget {
     final userDataAsync = ref.watch(loadUserInformationProvider(userId));
     final buttonLoadingProvider = StateProvider<bool>((ref) => false);
 
-    final state = ref.watch(mailRepositoryProvider);
+    ref.watch(mailRepositoryProvider);
     ref.listen<AsyncValue>(mailControllerProvider, (_, state) {
       state.showAlertDialogOnError(context);
     });
