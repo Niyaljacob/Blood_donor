@@ -2,6 +2,8 @@ import 'package:donatelife/common_widgets/async_value_ui.dart';
 import 'package:donatelife/common_widgets/common_button.dart';
 import 'package:donatelife/common_widgets/common_text_field.dart';
 import 'package:donatelife/features/authentication/presentation/controllers/auth_controller.dart';
+import 'package:donatelife/features/authentication/presentation/screens/widgets/registration_lottie.dart';
+import 'package:donatelife/features/authentication/presentation/screens/widgets/signin_register_button.dart';
 import 'package:donatelife/routes/routes.dart';
 import 'package:donatelife/utils/appstyles.dart';
 import 'package:donatelife/utils/size_config.dart';
@@ -60,22 +62,14 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  
-                  Lottie.asset(
-                    'assets/Animation2.json',
-                    height: SizeConfig.getProportionteHeight(150),
-                  ),
-                ],
-              ),
+              RegisterLottie(),
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: SizeConfig.getProportionteWidth(20),
                 ),
                 child: Container(
-                  margin: EdgeInsets.only(top: SizeConfig.getProportionteHeight(20)),
+                  margin: EdgeInsets.only(
+                      top: SizeConfig.getProportionteHeight(20)),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -156,36 +150,36 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       ),
                       SizedBox(height: SizeConfig.getProportionteHeight(20)),
                       CommonButton(
-  onTap: () {
-    final email = _emailController.text.toString();
-    final password = _passwordController.text.toString();
-    final name = _nameController.text.toString();
-    final phoneNumber = _phoneController.text.toString();
+                        onTap: () {
+                          final email = _emailController.text.toString();
+                          final password = _passwordController.text.toString();
+                          final name = _nameController.text.toString();
+                          final phoneNumber = _phoneController.text.toString();
 
-    ref
-        .read(authControllerProvider.notifier)
-        .createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-          name: name,
-          phoneNumber: phoneNumber,
-          bloodGroup: _selectedBloodGroup!,
-          type: widget.type,
-        )
-        .then((_) {
-          // Navigate to the Sign In screen after successful registration
-          context.goNamed(AppRoutes.signIn.name);
-        }).catchError((error) {
-          // Handle the error if the registration fails
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Registration failed: $error')),
-          );
-        });
-  },
-  title: "Register Me Now",
-  isLoading: state.isLoading,
-),
-
+                          ref
+                              .read(authControllerProvider.notifier)
+                              .createUserWithEmailAndPassword(
+                                email: email,
+                                password: password,
+                                name: name,
+                                phoneNumber: phoneNumber,
+                                bloodGroup: _selectedBloodGroup!,
+                                type: widget.type,
+                              )
+                              .then((_) {
+                            // Navigate to the Sign In screen after successful registration
+                            context.goNamed(AppRoutes.signIn.name);
+                          }).catchError((error) {
+                            // Handle the error if the registration fails
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text('Registration failed: $error')),
+                            );
+                          });
+                        },
+                        title: "Register Me Now",
+                        isLoading: state.isLoading,
+                      ),
                       SizedBox(height: SizeConfig.getProportionteHeight(15)),
                       Text(
                         "OR",
@@ -196,30 +190,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                         ),
                       ),
                       SizedBox(height: SizeConfig.getProportionteHeight(15)),
-                      GestureDetector(
-                        onTap: () {
-                          context.goNamed(AppRoutes.signIn.name);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: Appstyles.mainColor,
-                              width: 2,
-                            ),
-                          ),
-                          child: Text(
-                            "Sign In to my account",
-                            style: TextStyle(
-                              fontSize: SizeConfig.getProportionteHeight(15),
-                              color: Appstyles.mainColor,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ),
+                      SignInRegisterButton(),
                     ],
                   ),
                 ),
@@ -231,3 +202,4 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
     );
   }
 }
+

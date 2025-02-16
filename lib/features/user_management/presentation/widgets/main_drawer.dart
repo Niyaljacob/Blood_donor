@@ -13,298 +13,197 @@ class MainDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userId=ref.watch(currentUserProvider)!.uid;
-
+    final userId = ref.watch(currentUserProvider)!.uid;
     final userDataAsync = ref.watch(loadUserInformationProvider(userId));
 
-    ref.listen<AsyncValue>(loadUserInformationProvider(userId),(_, state){
+    ref.listen<AsyncValue>(loadUserInformationProvider(userId), (_, state) {
       state.showAlertDialogOnError(context);
     });
-    
-    return AsyncValueWidget<AppUser>(value: userDataAsync, data: (userData){
-      return SafeArea(
-        child: Drawer(
-      child: Column(
-        children: [
-          DrawerHeader(
-              child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: Appstyles.mainColor,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Colors.white,
-                  style: BorderStyle.solid,
-                  width: 2,
-                )),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/unnamed.png',
-                  height: 50,
-                  width: 50,
-                  fit: BoxFit.cover,
-                ),
-                Text(
-                  "Blood Donation App",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  userData.name,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  userData.email,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-          )),
-          Expanded(
+
+    return AsyncValueWidget<AppUser>(
+      value: userDataAsync,
+      data: (userData) {
+        return SafeArea(
+          child: Drawer(
             child: Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(15),
               decoration: BoxDecoration(
-                  color: Appstyles.mainColor,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.white,
-                    style: BorderStyle.solid,
-                    width: 2,
-                  )),
-              child: SingleChildScrollView(
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                gradient: LinearGradient(
+                  colors: [Appstyles.mainColor, Colors.black87],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: Column(
+                children: [
+                  // Drawer Header
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      // ignore: deprecated_member_use
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          // ignore: deprecated_member_use
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ListTile(
-                          leading: Icon(
-                            Icons.home,
-                            color: Colors.black,
-                            size: 30,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: Image.asset(
+                            'assets/unnamed.png',
+                            height: 70,
+                            width: 70,
+                            fit: BoxFit.cover,
                           ),
-                          title: Text(
-                            'Home',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () {},
                         ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.check_circle,
-                            color: Colors.black,
-                            size: 30,
+                        const SizedBox(height: 10),
+                        Text(
+                          "Blood Donation App",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
-                          title: Text(
-                            'Donors Emailed!',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onTap: () {},
                         ),
+                        const SizedBox(height: 5),
+                        Text(
+                          userData.name,
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          userData.email,
+                          style: TextStyle(
+                            color: Colors.white60,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Menu Options
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.all(10),
+                      children: [
+                        // Same BG Section
                         ListTile(
                           leading: Icon(
                             Icons.handshake,
-                            color: Colors.black,
+                            color: Colors.redAccent,
                             size: 30,
                           ),
                           title: Text(
                             'Same BG as me',
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name,extra: userData.bloodGroup);
+                            context.goNamed(AppRoutes.bloodGroupSelected.name,
+                                extra: userData.bloodGroup);
                           },
                         ),
-                        const Divider(
-                          color: Colors.white,
-                          height: 2,
-                        ),
-                        const Text(
-                          "Blood Groups",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
+                        const Divider(color: Colors.white54),
+
+                        // Blood Groups Section
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "Blood Groups",
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
-                        ListTile(
-                          leading: Image.asset(
-                            'assets/A+-rem.png',
-                            width: 30,
-                            height: 30,
+                        ..._buildBloodGroupTiles(context),
+                        const Divider(color: Colors.white54),
+
+                        // Actions Section
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child: Text(
+                            "Actions",
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                          title: Text('A Positive',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name, extra: 'A+');
-                          },
-                        ),
-                        ListTile(
-                          leading: Image.asset(
-                            'assets/A--rem.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          title: Text('A Negative',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name, extra: 'A-');
-                          },
-                        ),
-                        ListTile(
-                          leading: Image.asset(
-                            'assets/B+-rem.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          title: Text('B Positive',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name, extra: 'B+');
-                          },
-                        ),
-                        ListTile(
-                          leading: Image.asset(
-                            'assets/B--rem.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          title: Text('B Negative',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name, extra: 'B-');
-                          },
-                        ),
-                        ListTile(
-                          leading: Image.asset(
-                            'assets/AB+-rem.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          title: Text('AB Positive',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name, extra: 'AB+');
-                          },
-                        ),
-                        ListTile(
-                          leading: Image.asset(
-                            'assets/AB--rem.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          title: Text('AB Negative',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name, extra: 'AB-');
-                          },
-                        ),
-                        ListTile(
-                          leading: Image.asset(
-                            'assets/O+-rem.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          title: Text('O Positive',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name, extra: 'O+');
-                          },
-                        ),
-                        ListTile(
-                          leading: Image.asset(
-                            'assets/O--rem.png',
-                            width: 30,
-                            height: 30,
-                          ),
-                          title: Text('O Negative',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                            context.goNamed(AppRoutes.bloodGroupSelected.name, extra: 'O+');
-                          },
-                        ),
-                        const Divider(
-                          color: Colors.white,
-                          height: 2,
-                        ),
-                        const Text(
-                          "Actions",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.notifications,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                          title: Text('Notifications',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
-                          onTap: () {
-                          },
                         ),
                         ListTile(
                           leading: Icon(
                             Icons.person_sharp,
-                            color: Colors.black,
+                            color: Colors.blueAccent,
                             size: 30,
                           ),
-                          title: Text('My Account',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                              )),
+                          title: Text(
+                            'My Account',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           onTap: () {
                             context.goNamed(AppRoutes.account.name);
                           },
                         ),
                       ],
-                    )),
+                    ),
+                  ),
+                ],
               ),
             ),
-          )
-        ],
-      ),
-    ));
-    });
+          ),
+        );
+      },
+    );
+  }
+
+  // Helper to build Blood Group Tiles
+  List<Widget> _buildBloodGroupTiles(BuildContext context) {
+    final bloodGroups = [
+      {'name': 'A Positive', 'value': 'A+'},
+      {'name': 'A Negative', 'value': 'A-'},
+      {'name': 'B Positive', 'value': 'B+'},
+      {'name': 'B Negative', 'value': 'B-'},
+      {'name': 'AB Positive', 'value': 'AB+'},
+      {'name': 'AB Negative', 'value': 'AB-'},
+      {'name': 'O Positive', 'value': 'O+'},
+      {'name': 'O Negative', 'value': 'O-'},
+    ];
+
+    return bloodGroups
+        .map(
+          (group) => ListTile(
+            leading: Icon(Icons.bloodtype_rounded, color: Colors.redAccent),
+            title: Text(
+              group['name']!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            onTap: () {
+              context.goNamed(AppRoutes.bloodGroupSelected.name,
+                  extra: group['value']);
+            },
+          ),
+        )
+        .toList();
   }
 }

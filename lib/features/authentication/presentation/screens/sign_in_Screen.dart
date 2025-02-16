@@ -2,6 +2,7 @@ import 'package:donatelife/common_widgets/async_value_ui.dart';
 import 'package:donatelife/common_widgets/common_button.dart';
 import 'package:donatelife/common_widgets/common_text_field.dart';
 import 'package:donatelife/features/authentication/presentation/controllers/auth_controller.dart';
+import 'package:donatelife/features/authentication/presentation/screens/widgets/animation_button.dart';
 import 'package:donatelife/routes/routes.dart';
 import 'package:donatelife/utils/appstyles.dart';
 import 'package:donatelife/utils/size_config.dart';
@@ -118,7 +119,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       ),
                     ),
                     SizedBox(height: SizeConfig.getProportionteHeight(20)),
-                    _buildAnimatedButton(
+                    buildAnimatedButton(
                       context,
                       "Register as Recipient",
                       Colors.pinkAccent,
@@ -128,7 +129,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       },
                     ),
                     SizedBox(height: SizeConfig.getProportionteHeight(15)),
-                    _buildAnimatedButton(
+                    buildAnimatedButton(
                       context,
                       "Register as Donor",
                       Colors.blueAccent,
@@ -148,43 +149,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  Widget _buildAnimatedButton(BuildContext context, String title, Color color, IconData icon, {required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SlideInLeft(
-        duration: const Duration(milliseconds: 700),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          width: SizeConfig.screenWidth,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: color.withOpacity(0.5),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: color, size: 24),
-              const SizedBox(width: 10),
-              Text(
-                title,
-                style: GoogleFonts.lato(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: color,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+
 }
+
+  
